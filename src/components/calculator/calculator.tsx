@@ -8,6 +8,7 @@ import Table from "react-bootstrap/Table";
 function Calculator() {
   const [variable, setVariable] = useState("");
   const [variable2, setVariable2] = useState("");
+  const [anzeige, setAnzeige] = useState("");
   const [operator, setOperator] = useState("");
   const [ergebnis, setErgebnis] = useState(0);
   const [isVariableTwo, setIsVariableTwo] = useState(false);
@@ -17,10 +18,12 @@ function Calculator() {
     if (!isVariableTwo) {
       let tmp = "";
       tmp = variable.concat(number);
+      setAnzeige(anzeige.concat(tmp));
       setVariable(tmp);
     } else {
       let tmp = "";
       tmp = variable2.concat(number);
+      setAnzeige(anzeige.concat(tmp));
       setVariable2(tmp);
     }
   };
@@ -29,12 +32,33 @@ function Calculator() {
   const getOperator = (symbol: string) => {
     setOperator(symbol);
     setIsVariableTwo(true);
+    setAnzeige(anzeige.concat(symbol));
   };
 
   // berechnet
   const compute = () => {
     if (operator === "+") {
-      setErgebnis(Number(variable) + Number(variable2));
+      let ergebnis = Number(variable) + Number(variable2);
+      setErgebnis(ergebnis);
+      setAnzeige(String(ergebnis));
+      reset();
+    }
+    if (operator === "-") {
+      let ergebnis = Number(variable) - Number(variable2);
+      setErgebnis(ergebnis);
+      setAnzeige(String(ergebnis));
+      reset();
+    }
+    if (operator === "*") {
+      let ergebnis = Number(variable) * Number(variable2);
+      setErgebnis(ergebnis);
+      setAnzeige(String(ergebnis));
+      reset();
+    }
+    if (operator === "/") {
+      let ergebnis = Number(variable) / Number(variable2);
+      setErgebnis(ergebnis);
+      setAnzeige(String(ergebnis));
       reset();
     }
   };
@@ -46,6 +70,7 @@ function Calculator() {
     setErgebnis(0);
     setVariable2("");
     setIsVariableTwo(false);
+    setAnzeige("");
   };
 
   const reset = () => {
@@ -61,7 +86,8 @@ function Calculator() {
     console.log("variable2", variable2);
     console.log("isVariableTwo", isVariableTwo);
     console.log("ergebnis", ergebnis);
-  }, [variable, operator, ergebnis, variable2, isVariableTwo]);
+    console.log("anzeige", anzeige);
+  }, [variable, operator, ergebnis, variable2, isVariableTwo, anzeige]);
 
   return (
     <Card style={{ width: "18rem" }}>
@@ -73,11 +99,7 @@ function Calculator() {
             <tr>
               <td colSpan={3}>
                 <InputGroup className="mb-3">
-                  <Form.Control
-                    id="feld"
-                    ria-describedby="inputGroup-sizing-default"
-                    value={ergebnis}
-                  />
+                  <Form.Control id="feld" value={anzeige} />
                 </InputGroup>
               </td>
               <td>
@@ -91,6 +113,7 @@ function Calculator() {
                 </Button>{" "}
               </td>
             </tr>
+
             <tr>
               <td>
                 <Button
@@ -120,7 +143,13 @@ function Calculator() {
                 </Button>{" "}
               </td>
               <td>
-                <Button variant="secondary">/</Button>{" "}
+                <Button
+                  onClick={(e: any) => getOperator(e.target.value)}
+                  variant="secondary"
+                  value="/"
+                >
+                  /
+                </Button>{" "}
               </td>
             </tr>
             <tr>
@@ -152,7 +181,13 @@ function Calculator() {
                 </Button>{" "}
               </td>
               <td>
-                <Button variant="secondary">*</Button>{" "}
+                <Button
+                  onClick={(e: any) => getOperator(e.target.value)}
+                  variant="secondary"
+                  value="*"
+                >
+                  *
+                </Button>{" "}
               </td>
             </tr>
             <tr>
@@ -184,7 +219,13 @@ function Calculator() {
                 </Button>{" "}
               </td>
               <td>
-                <Button variant="secondary">-</Button>{" "}
+                <Button
+                  onClick={(e: any) => getOperator(e.target.value)}
+                  variant="secondary"
+                  value="-"
+                >
+                  -
+                </Button>{" "}
               </td>
             </tr>
             <tr>
