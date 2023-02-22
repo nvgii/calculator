@@ -6,22 +6,21 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 
 function Calculator() {
-  const [variable, setVariable] = useState("");
-  const [variable2, setVariable2] = useState("");
-  const [anzeige, setAnzeige] = useState("");
-  const [operator, setOperator] = useState("");
-  const [ergebnis, setErgebnis] = useState(0);
-  const [isVariableTwo, setIsVariableTwo] = useState(false);
+  const [variable, setVariable] = useState<String>("");
+  const [variable2, setVariable2] = useState<String>("");
+  const [anzeige, setAnzeige] = useState<any>("");
+  const [operator, setOperator] = useState<String>("");
+  const [ergebnis, setErgebnis] = useState<Number>(0);
+  const [isVariableTwo, setIsVariableTwo] = useState<Boolean>(false);
 
   // erweitert die Zahl
   const append = (number: string) => {
+    let tmp = "";
     if (!isVariableTwo) {
-      let tmp = "";
       tmp = variable.concat(number);
       setAnzeige(anzeige.concat(tmp));
       setVariable(tmp);
     } else {
-      let tmp = "";
       tmp = variable2.concat(number);
       setAnzeige(anzeige.concat(tmp));
       setVariable2(tmp);
@@ -39,54 +38,44 @@ function Calculator() {
   const compute = () => {
     if (operator === "+") {
       let ergebnis = Number(variable) + Number(variable2);
-      setErgebnis(ergebnis);
-      setAnzeige(String(ergebnis));
-      reset();
+      setScreenAndResetStates(ergebnis);
     }
     if (operator === "-") {
       let ergebnis = Number(variable) - Number(variable2);
-      setErgebnis(ergebnis);
-      setAnzeige(String(ergebnis));
-      reset();
+      setScreenAndResetStates(ergebnis);
     }
     if (operator === "*") {
       let ergebnis = Number(variable) * Number(variable2);
-      setErgebnis(ergebnis);
-      setAnzeige(String(ergebnis));
-      reset();
+      setScreenAndResetStates(ergebnis);
     }
     if (operator === "/") {
       let ergebnis = Number(variable) / Number(variable2);
+      setScreenAndResetStates(ergebnis);
+    }
+
+    function setScreenAndResetStates(ergebnis: number) {
       setErgebnis(ergebnis);
       setAnzeige(String(ergebnis));
-      reset();
+      resetStates();
     }
   };
 
-  // löscht
-  const clear = (e: any) => {
+  function resetStates() {
     setVariable("");
     setOperator("");
-    setErgebnis(0);
     setVariable2("");
     setIsVariableTwo(false);
+  }
+
+  // löscht
+  const clear = (e: any) => {
+    resetStates();
+    setErgebnis(0);
     setAnzeige("");
   };
 
-  const reset = () => {
-    setVariable("");
-    setOperator("");
-    setVariable2("");
-    setIsVariableTwo(false);
-  };
-
   useEffect(() => {
-    console.log("variable", variable);
-    console.log("verändert symbol", operator);
-    console.log("variable2", variable2);
-    console.log("isVariableTwo", isVariableTwo);
-    console.log("ergebnis", ergebnis);
-    console.log("anzeige", anzeige);
+    console.table([["variable", variable], ["verändert symbol", operator],["variable2", variable2],["isVariableTwo", isVariableTwo],["ergebnis", ergebnis],["anzeige", anzeige]]);
   }, [variable, operator, ergebnis, variable2, isVariableTwo, anzeige]);
 
   return (
