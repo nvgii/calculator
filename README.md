@@ -45,3 +45,10 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 # calculator
+
+# Which bugs are there?
+1. after entering 11 -> gets to 111 etc...
+# Which improvements are possible:
+1. centering calculator
+2. add multiple calculations 
+3. bla bla... etc
